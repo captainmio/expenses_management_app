@@ -15,3 +15,5 @@ MaterialColor customAmberColorSwatch = MaterialColor(
     900: Colors.amber[900]!,
   },
 );
+
+Color themeColor = Colors.amber[800] as Color;
