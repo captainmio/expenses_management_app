@@ -10,8 +10,10 @@ class AddItemScreen extends StatefulWidget {
 class _AddItemScreenState extends State<AddItemScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [Text('Add Item Screen')],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Add Transaction"),
+      ),
     );
   }
 }

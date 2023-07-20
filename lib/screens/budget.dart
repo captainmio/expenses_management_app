@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/bottom_navbar.dart';
+
 class BudgetScreen extends StatefulWidget {
   const BudgetScreen({super.key});
 
@@ -10,8 +12,9 @@ class BudgetScreen extends StatefulWidget {
 class _BudgetScreenState extends State<BudgetScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [Text('Budget Screen')],
+    return const Scaffold(
+      body: Text('Budget Screen'),
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }
