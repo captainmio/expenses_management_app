@@ -5,14 +5,9 @@ import '../constants/page_lists.dart';
 import '../constants/theme_color.dart';
 import '../provider_models/provider_page_model.dart';
 
-class BottomNavBar extends StatefulWidget {
+class BottomNavBar extends StatelessWidget {
   const BottomNavBar({super.key});
 
-  @override
-  State<BottomNavBar> createState() => BottomNavBarState();
-}
-
-class BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     final providerPageModel = Provider.of<ProviderPageModel>(context);
@@ -52,7 +47,7 @@ class BottomNavBarState extends State<BottomNavBar> {
           const BottomNavigationBarItem(
               icon: Icon(Icons.query_stats), label: 'Stats'),
         ],
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: themeColor,
         onTap: (index) => onItemTapped(index, context),
         currentIndex: providerPageModel.currentIndex,
       );

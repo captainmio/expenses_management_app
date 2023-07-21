@@ -30,8 +30,8 @@ class _MyAppState extends State<MyApp> {
       home: screens[providerPageModel.currentIndex],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: customAmberColorSwatch,
-        fontFamily: GoogleFonts.openSans().fontFamily,
+        primarySwatch: Colors.green,
+        fontFamily: GoogleFonts.cabin().fontFamily,
       ),
     );
   }
