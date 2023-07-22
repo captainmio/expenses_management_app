@@ -1,8 +1,8 @@
 import 'package:expenses_management_app/models/widgets/pie_chart_model.dart';
 import 'package:expenses_management_app/widgets/app_bar.dart';
 import 'package:expenses_management_app/widgets/chart_piechart.dart';
+import 'package:expenses_management_app/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../constants/theme_color.dart';
 import '../widgets/bottom_navbar.dart';
 
@@ -41,11 +41,30 @@ class HomeScreen extends StatelessWidget {
       )
     ];
 
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Column(
-        children: [
-          Container(
+    final List<Widget> transactions = List.generate(
+      20,
+      (index) => Padding(
+        padding: EdgeInsets.only(bottom: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.green[100],
+          ),
+          child: TransactionItem(
+            title: 'Grocery ${index + 1}',
+            amount: index * 10.0,
+            icon: const Icon(Icons.grade_sharp),
+            description: 'Description ${index + 1}',
+          ),
+        ),
+      ),
+    );
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(15),
+          child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
@@ -77,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                                 color: fontColor),
                           ),
                           Text(
-                            "\$867.21",
+                            "\$ 867.21",
                             style: TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.bold,
@@ -105,8 +124,17 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+          ),
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: transactions,
+          ),
+        )
+      ],
     );
   }
 }

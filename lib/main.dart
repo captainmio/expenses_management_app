@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:provider/provider.dart';
 
-import 'constants/theme_color.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(

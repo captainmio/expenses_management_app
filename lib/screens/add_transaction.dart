@@ -1,7 +1,6 @@
 import 'package:expenses_management_app/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/page_lists.dart';
 
 class AddTransactionScreen extends StatefulWidget {
   const AddTransactionScreen({super.key});
