@@ -1,4 +1,5 @@
 import 'package:expenses_management_app/models/widgets/pie_chart_model.dart';
+import 'package:expenses_management_app/screens/settings.dart';
 import 'package:expenses_management_app/widgets/app_bar.dart';
 import 'package:expenses_management_app/widgets/chart_piechart.dart';
 import 'package:expenses_management_app/widgets/transaction_item.dart';
@@ -13,7 +14,14 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: "Home", actions: [
-        IconButton(icon: const Icon(Icons.settings), onPressed: () {}),
+        IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingScreen()),
+              );
+            }),
       ]),
       body: SingleChildScrollView(
         child: bodyContent(),
@@ -48,7 +56,7 @@ class HomeScreen extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.green[100],
+            color: paleGreen,
           ),
           child: TransactionItem(
             title: 'Grocery ${index + 1}',
@@ -103,78 +111,69 @@ class HomeScreen extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(15),
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
-            child: Column(
-              children: [
-                AspectRatio(
-                  aspectRatio: 2,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Column(
-                            children: <Widget>[
-                              const SizedBox(
-                                height: 50,
-                              ),
-                              Text(
-                                "Available Balance",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: fontColor),
-                              ),
-                              Text(
-                                "\$ 867.21",
-                                style: TextStyle(
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.bold,
-                                    color: fontColor),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: ChartPieChart(
-                                objects: obj,
-                              ),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              AspectRatio(
+                aspectRatio: 2,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          children: <Widget>[
+                            const SizedBox(
+                              height: 50,
                             ),
+                            Text(
+                              "Available Balance",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: fontColor),
+                            ),
+                            Text(
+                              "\$ 867.21",
+                              style: TextStyle(
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.bold,
+                                  color: fontColor),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: ChartPieChart(
+                            objects: obj,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Row(
-                    children: [
-                      detailTile(
-                        name: 'Ingoing',
-                        value: 500.0,
-                        icon: const Icon(Icons.outbox, color: Colors.white),
-                      ),
-                      const SizedBox(width: 10),
-                      detailTile(
-                        name: 'Outgoing',
-                        value: 200.0,
-                        icon: const Icon(Icons.inbox, color: Colors.white),
-                      ),
-                    ],
+              ),
+              Row(
+                children: [
+                  detailTile(
+                    name: 'Ingoing',
+                    value: 500.0,
+                    icon: const Icon(Icons.outbox, color: Colors.white),
                   ),
-                )
-              ],
-            ),
+                  const SizedBox(width: 10),
+                  detailTile(
+                    name: 'Outgoing',
+                    value: 200.0,
+                    icon: const Icon(Icons.inbox, color: Colors.white),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
         Container(
