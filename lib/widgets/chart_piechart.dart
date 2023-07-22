@@ -35,7 +35,7 @@ class _ChartPieChartState extends State<ChartPieChart> {
           show: false,
         ),
         sectionsSpace: 0,
-        centerSpaceRadius: 40,
+        centerSpaceRadius: 30,
       ),
     );
   }

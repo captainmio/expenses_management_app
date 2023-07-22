@@ -36,7 +36,6 @@ class TransactionItem extends StatelessWidget {
         ),
         const Icon(Icons.arrow_forward_ios)
       ]),
-      hoverColor: Colors.blue,
     );
   }
 }

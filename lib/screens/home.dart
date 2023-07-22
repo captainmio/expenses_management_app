@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
     final List<Widget> transactions = List.generate(
       20,
       (index) => Padding(
-        padding: EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.only(bottom: 10),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -60,68 +60,120 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
+    Widget detailTile({
+      required Icon icon,
+      required String name,
+      required double value,
+    }) {
+      return Expanded(
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.green[300],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              icon,
+              Column(
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                  Text(
+                    '\$ $value',
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.right,
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(15),
           child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(0.6),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3))
-                ]),
-            padding: const EdgeInsets.all(15),
-            child: AspectRatio(
-              aspectRatio: 2,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            "Your Balance",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: fontColor),
-                          ),
-                          Text(
-                            "\$ 867.21",
-                            style: TextStyle(
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold,
-                                color: fontColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ChartPieChart(
-                            objects: obj,
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+            child: Column(
+              children: [
+                AspectRatio(
+                  aspectRatio: 2,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            children: <Widget>[
+                              const SizedBox(
+                                height: 50,
+                              ),
+                              Text(
+                                "Available Balance",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: fontColor),
+                              ),
+                              Text(
+                                "\$ 867.21",
+                                style: TextStyle(
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.bold,
+                                    color: fontColor),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: ChartPieChart(
+                                objects: obj,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    children: [
+                      detailTile(
+                        name: 'Ingoing',
+                        value: 500.0,
+                        icon: const Icon(Icons.outbox, color: Colors.white),
+                      ),
+                      const SizedBox(width: 10),
+                      detailTile(
+                        name: 'Outgoing',
+                        value: 200.0,
+                        icon: const Icon(Icons.inbox, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         ),
@@ -131,7 +183,40 @@ class HomeScreen extends StatelessWidget {
           ),
           padding: const EdgeInsets.all(15),
           child: Column(
-            children: transactions,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Recent transactions (last 20)",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        debugPrint('Redirect to history screen');
+                        // Navigator.pushNamed(context, routeName);
+                      },
+                      child: const Text(
+                        "See all",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.black,
+                          decorationThickness: 2,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              ...transactions
+            ],
           ),
         )
       ],
