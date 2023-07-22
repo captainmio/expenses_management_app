@@ -41,11 +41,6 @@ class HomeScreen extends StatelessWidget {
         value: 30,
         label: "Income",
         color: Colors.lightBlue,
-      ),
-      PieChartModel(
-        value: 30,
-        label: "Saving",
-        color: Colors.pink,
       )
     ];
 
@@ -111,7 +106,7 @@ class HomeScreen extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           child: Column(
             children: [
               AspectRatio(
@@ -161,13 +156,13 @@ class HomeScreen extends StatelessWidget {
               Row(
                 children: [
                   detailTile(
-                    name: 'Ingoing',
+                    name: 'Income',
                     value: 500.0,
                     icon: const Icon(Icons.outbox, color: Colors.white),
                   ),
                   const SizedBox(width: 10),
                   detailTile(
-                    name: 'Outgoing',
+                    name: 'Expenses',
                     value: 200.0,
                     icon: const Icon(Icons.inbox, color: Colors.white),
                   ),

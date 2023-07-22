@@ -2,7 +2,11 @@ import 'package:expenses_management_app/constants/theme_color.dart';
 import 'package:flutter/material.dart';
 
 class CategoryBox extends StatelessWidget {
-  const CategoryBox({super.key});
+  final int? id;
+  final String title;
+  final IconData icon;
+  const CategoryBox(
+      {super.key, required this.title, required this.icon, this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +23,12 @@ class CategoryBox extends StatelessWidget {
       child: Column(
         children: [
           Icon(
-            Icons.access_time_sharp,
+            icon,
             size: 50,
             color: fontColor,
           ),
           Text(
-            'Category 1',
+            title,
             style: TextStyle(
               fontSize: 20,
               color: fontColor,

@@ -3,14 +3,14 @@ import 'package:provider/provider.dart';
 
 import '../constants/page_lists.dart';
 import '../constants/theme_color.dart';
-import '../provider_models/provider_page_model.dart';
+import '../provider_models/provider_config_model.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final providerPageModel = Provider.of<ProviderPageModel>(context);
+    final providerPageModel = Provider.of<ProviderConfigModel>(context);
 
     void setItem(int index) {
       providerPageModel.updateCurrentIndex(index);

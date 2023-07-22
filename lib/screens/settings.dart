@@ -1,6 +1,9 @@
+import 'package:expenses_management_app/models/category_model.dart';
 import 'package:expenses_management_app/widgets/category_box.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../provider_models/provider_config_model.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/bottom_navbar.dart';
 
@@ -9,6 +12,8 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final providerPageModel = Provider.of<ProviderConfigModel>(context);
+    List<CategoryModel> categories = providerPageModel.categories;
     return Scaffold(
       appBar: const CustomAppBar(
         title: "Settings",
@@ -39,19 +44,22 @@ class SettingScreen extends StatelessWidget {
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height,
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  childAspectRatio: 13 / 9,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: List.generate(
-                    15,
-                    (index) => const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: CategoryBox(),
-                    ),
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 13 / 9,
                   ),
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: CategoryBox(
+                          title: categories[index].title,
+                          icon: categories[index].icon),
+                    );
+                  },
                 ),
-              )
+              ),
             ],
           ),
         ),
