@@ -1,5 +1,5 @@
 import 'package:expenses_management_app/models/widgets/pie_chart_model.dart';
-import 'package:expenses_management_app/screens/settings.dart';
+import 'package:expenses_management_app/screens/category.dart';
 import 'package:expenses_management_app/widgets/app_bar.dart';
 import 'package:expenses_management_app/widgets/chart_piechart.dart';
 import 'package:expenses_management_app/widgets/transaction_item.dart';
@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SettingScreen()),
+                MaterialPageRoute(builder: (context) => const CategoryScreen()),
               );
             }),
       ]),

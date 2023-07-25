@@ -1,20 +1,22 @@
+import 'package:expenses_management_app/constants/icon_lists.dart';
 import 'package:flutter/material.dart';
 
 class ListIconTabPage extends StatefulWidget {
   final List data;
   final int displayNumber;
   final Function(IconData) onItemSelected;
-  final bool? fillOnSelect;
   final double height;
   final double spacing;
-  const ListIconTabPage(
-      {super.key,
-      required this.data,
-      required this.displayNumber,
-      required this.onItemSelected,
-      this.fillOnSelect = false,
-      this.height = 280,
-      this.spacing = 8.0});
+  final IconData? initialSelectedItem;
+  const ListIconTabPage({
+    super.key,
+    required this.data,
+    required this.displayNumber,
+    required this.onItemSelected,
+    this.height = 280,
+    this.spacing = 8.0,
+    this.initialSelectedItem,
+  });
 
   @override
   State<ListIconTabPage> createState() => _ListIconTabPageState();
@@ -24,6 +26,22 @@ class _ListIconTabPageState extends State<ListIconTabPage>
     with SingleTickerProviderStateMixin {
   late final TabController tabController;
   final int _index = 0;
+  IconData? selectedIcon;
+
+  bool isIconSelected(IconData icon) {
+    return icon == selectedIcon;
+  }
+
+  void _handleItemSelection() {
+    widget.onItemSelected(selectedIcon!);
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -32,19 +50,13 @@ class _ListIconTabPageState extends State<ListIconTabPage>
         length: (widget.data.length / widget.displayNumber).ceil(),
         initialIndex: _index,
         vsync: this);
-  }
 
-  IconData? selectedIcon;
-  bool isIconSelected(IconData icon) {
-    // You can customize the logic here based on your requirements.
-    // For this example, I'm checking if the icon is the same as the selected icon.
-    return icon == selectedIcon;
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
+    // auto selected first value
+    if (widget.initialSelectedItem != null) {
+      setState(() {
+        selectedIcon = widget.initialSelectedItem;
+      });
+    }
   }
 
   @override
@@ -78,7 +90,7 @@ class _ListIconTabPageState extends State<ListIconTabPage>
                         setState(() {
                           selectedIcon = item;
                         });
-                        widget.onItemSelected(item);
+                        _handleItemSelection();
                       },
                       child: Container(
                         padding: const EdgeInsets.all(2),

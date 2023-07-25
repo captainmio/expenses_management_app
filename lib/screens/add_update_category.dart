@@ -1,21 +1,28 @@
 import 'package:expenses_management_app/constants/icon_lists.dart';
+import 'package:expenses_management_app/widgets/color_picker.dart';
 import 'package:flutter/material.dart';
+import '../constants/theme_color.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/list_icon_tab_page.dart';
 
-class AddUpdateSettingScreen extends StatefulWidget {
+class AddUpdateCategoryScreen extends StatefulWidget {
   final int? id;
   final String title;
   final IconData icon;
-  const AddUpdateSettingScreen(
+  const AddUpdateCategoryScreen(
       {super.key, this.id, required this.title, required this.icon});
 
   @override
-  State<AddUpdateSettingScreen> createState() => _AddUpdateSettingScreenState();
+  State<AddUpdateCategoryScreen> createState() =>
+      _AddUpdateCategoryScreenState();
 }
 
-class _AddUpdateSettingScreenState extends State<AddUpdateSettingScreen> {
+class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
   IconData? selectedIcon;
+  Color? selectedColor;
+
+  String categoryType = 'income';
+  final TextEditingController categoryName = TextEditingController();
 
   String? _fieldValidator(String? value) {
     if (value == null || value.isEmpty) {
@@ -24,7 +31,7 @@ class _AddUpdateSettingScreenState extends State<AddUpdateSettingScreen> {
     return null;
   }
 
-  void _handleIconSelection(icon) {
+  void _handleIconSelection(dynamic icon) {
     setState(
       () {
         selectedIcon = icon;
@@ -32,17 +39,58 @@ class _AddUpdateSettingScreenState extends State<AddUpdateSettingScreen> {
     );
   }
 
+  void _handleColorSelected(Color color) {
+    setState(
+      () {
+        selectedColor = color;
+      },
+    );
+  }
+
+  void _handleCategoryTypeSelection(String value) {
+    setState(
+      () {
+        categoryType = value;
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _handleIconSelection(iconslists[1]);
+    _handleColorSelected(Colors.red);
+  }
+
   @override
   Widget build(BuildContext context) {
-    String headerTitle = 'Add Settings';
+    String headerTitle = 'Add Category';
     if (widget.id != null) {
-      headerTitle = 'Update Settings';
+      headerTitle = 'Update Category';
     }
 
-    final TextEditingController categoryName = TextEditingController();
-    String categoryType = 'expenses';
-
     return Scaffold(
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.transparent,
+        elevation: 0,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: ElevatedButton(
+            onPressed: () {
+              print(selectedColor);
+              print(selectedIcon);
+              print(categoryName.text);
+              print(categoryType);
+            },
+            child: Text(
+              'Save',
+              style: TextStyle(
+                fontSize: buttonTextFontSize,
+              ),
+            ),
+          ),
+        ),
+      ),
       appBar: CustomAppBar(title: headerTitle, center: true),
       body: SingleChildScrollView(
         child: Padding(
@@ -67,7 +115,9 @@ class _AddUpdateSettingScreenState extends State<AddUpdateSettingScreen> {
                       groupValue: categoryType,
                       value: 'expenses',
                       onChanged: (value) {
-                        // Do something when the checkbox is checked/unchecked.
+                        setState(() {
+                          categoryType = value!;
+                        });
                       },
                       title: const Text(
                         'Expenses',
@@ -80,7 +130,9 @@ class _AddUpdateSettingScreenState extends State<AddUpdateSettingScreen> {
                       groupValue: categoryType,
                       value: 'income',
                       onChanged: (value) {
-                        // Do something when the checkbox is checked/unchecked.
+                        setState(() {
+                          categoryType = value!;
+                        });
                       },
                       title: const Text('Income'),
                     ),
@@ -102,12 +154,27 @@ class _AddUpdateSettingScreenState extends State<AddUpdateSettingScreen> {
                 height: 10,
               ),
               ListIconTabPage(
+                initialSelectedItem: selectedIcon,
                 data: iconslists,
                 displayNumber: 10,
                 onItemSelected: _handleIconSelection,
-                fillOnSelect: true,
-                height: 220,
+                height: 200,
                 spacing: 30.0,
+              ),
+              const Align(
+                alignment:
+                    Alignment.centerLeft, // Align the "Icon" text to the left.
+                child: Text(
+                  'Color',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomColorPicker(
+                onColorSelected: _handleColorSelected,
+                initialSelectedColor: selectedColor,
               )
             ],
           ),

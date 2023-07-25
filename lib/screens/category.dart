@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 
 import '../provider_models/provider_config_model.dart';
 import '../widgets/app_bar.dart';
-import 'add_update_setting.dart';
+import 'add_update_category.dart';
 
-class SettingScreen extends StatelessWidget {
-  const SettingScreen({super.key});
+class CategoryScreen extends StatelessWidget {
+  const CategoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class SettingScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AddUpdateSettingScreen(
+                                builder: (context) => AddUpdateCategoryScreen(
                                       id: categories[index].id,
                                       title: categories[index].title,
                                       icon: categories[index].icon,
