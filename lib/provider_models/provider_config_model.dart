@@ -43,7 +43,7 @@ class ProviderConfigModel extends ChangeNotifier {
     CategoryModel(
       id: 7,
       title: 'Transportation',
-      icon: Icons.directions_bus,
+      icon: FontAwesome.bus,
     ),
     CategoryModel(
       id: 8,

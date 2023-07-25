@@ -1,0 +1,33 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+
+List<IconData> iconslists = const [
+  FontAwesome.shopping_bag,
+  FontAwesome.coffee,
+  FontAwesome.cutlery,
+  FontAwesome.birthday_cake,
+  FontAwesome.home,
+  FontAwesome.bus,
+  FontAwesome.automobile,
+  FontAwesome.plane,
+  FontAwesome.bicycle,
+  FontAwesome.taxi,
+  FontAwesome.wrench,
+  FontAwesome.group,
+  FontAwesome.child,
+  FontAwesome.money,
+  FontAwesome.umbrella,
+  FontAwesome.building_o,
+  FontAwesome.hospital_o,
+  FontAwesome.building,
+  FontAwesome.hotel,
+  FontAwesome.desktop,
+  FontAwesome.ticket,
+  FontAwesome.institution,
+  FontAwesome.graduation_cap,
+  FontAwesome.paw,
+  FontAwesome.soccer_ball_o,
+  FontAwesome.wifi,
+  FontAwesome.newspaper_o,
+  FontAwesome.cc_mastercard,
+];

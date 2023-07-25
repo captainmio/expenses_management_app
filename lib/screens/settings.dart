@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../provider_models/provider_config_model.dart';
 import '../widgets/app_bar.dart';
-import '../widgets/bottom_navbar.dart';
+import 'add_update_setting.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -24,16 +24,22 @@ class SettingScreen extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              const Text(
-                "Add/Update Category",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.start,
-              ),
               const SizedBox(
                 height: 10,
+              ),
+              const Align(
+                alignment:
+                    Alignment.centerLeft, // Align the "Icon" text to the left.
+                child: Text(
+                  "Add/Update Category",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               const Text(
                 "Select a category and fine tune you budgeting plan to achieve what you need",
@@ -51,11 +57,23 @@ class SettingScreen extends StatelessWidget {
                   ),
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: CategoryBox(
-                          title: categories[index].title,
-                          icon: categories[index].icon),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddUpdateSettingScreen(
+                                      id: categories[index].id,
+                                      title: categories[index].title,
+                                      icon: categories[index].icon,
+                                    )));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: CategoryBox(
+                            title: categories[index].title,
+                            icon: categories[index].icon),
+                      ),
                     );
                   },
                 ),
