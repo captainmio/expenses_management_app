@@ -64,7 +64,9 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
 
       await Categories.createCategory(
               name, selectedIcon!.codePoint, categoryType, selectedColor!.value)
-          .then((value) => _goBack());
+          .then((value) {
+        _goBack();
+      });
     }
   }
 

@@ -1,15 +1,17 @@
 import 'package:sqflite/sqflite.dart' as sql;
 
+import '../models/category_model.dart';
+
 class Categories {
   static Future<void> createTable(sql.Database database) async {
     await database.execute("""CREATE TABLE categories(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      name TEXT NOT NULL,
-      icon TEXT NOT NULL,
+      title TEXT NOT NULL,
+      icon INTEGER NOT NULL,
       type TEXT NOT NULL,
-      color TEXT NOT NULL,
-      can_delete INTEGER NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      color INTEGER NOT NULL,
+      canDelete INTEGER NOT NULL,
+      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
 """);
   }
@@ -22,7 +24,7 @@ class Categories {
   }
 
   static Future<int> createCategory(
-    String name,
+    String title,
     int icon,
     String type,
     int color,
@@ -30,15 +32,32 @@ class Categories {
     final db = await Categories.db();
 
     final data = {
-      'name': name,
+      'title': title,
       'icon': icon,
       'type': type,
       'color': color,
-      'can_delete': 1,
+      'canDelete': 1,
     };
 
     final id = await db.insert('categories', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
+  }
+
+  static Future<List<CategoryModel>> getCategories() async {
+    final db = await Categories.db();
+    final List<Map<String, dynamic>> dbResult =
+        await db.query('categories', orderBy: 'id');
+
+    print(dbResult.toString());
+
+    if (dbResult.isEmpty) {
+      return [];
+    } else {
+      final result =
+          dbResult.map((map) => CategoryModel.fromJson(map)).toList();
+
+      return result;
+    }
   }
 }

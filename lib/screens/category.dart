@@ -1,4 +1,5 @@
 import 'package:expenses_management_app/models/category_model.dart';
+import 'package:expenses_management_app/services/categories.dart';
 import 'package:expenses_management_app/widgets/category_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,16 +8,29 @@ import '../provider_models/provider_config_model.dart';
 import '../widgets/app_bar.dart';
 import 'add_update_category.dart';
 
-class CategoryScreen extends StatelessWidget {
+class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
+
+  @override
+  State<CategoryScreen> createState() => _CategoryScreenState();
+}
+
+class _CategoryScreenState extends State<CategoryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<ProviderConfigModel>(context, listen: false).getcategories();
+  }
 
   @override
   Widget build(BuildContext context) {
     final providerPageModel = Provider.of<ProviderConfigModel>(context);
-    List<CategoryModel> categories = providerPageModel.categories;
+
+    List<CategoryModel> categories = providerPageModel.getCategories;
+
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: "Settings",
+      appBar: CustomAppBar(
+        title: "Settings categoriesNumber: ${categories.length}",
         center: true,
       ),
       body: SingleChildScrollView(
@@ -66,7 +80,10 @@ class CategoryScreen extends StatelessWidget {
                                       id: categories[index].id,
                                       title: categories[index].title,
                                       icon: categories[index].icon,
-                                    )));
+                                    ))).then((value) =>
+                            Provider.of<ProviderConfigModel>(context,
+                                    listen: false)
+                                .getcategories());
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10),
