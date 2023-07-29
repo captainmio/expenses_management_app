@@ -1,4 +1,5 @@
 import 'package:expenses_management_app/constants/icon_lists.dart';
+import 'package:expenses_management_app/services/categories.dart';
 import 'package:expenses_management_app/widgets/color_picker.dart';
 import 'package:flutter/material.dart';
 import '../constants/theme_color.dart';
@@ -20,8 +21,9 @@ class AddUpdateCategoryScreen extends StatefulWidget {
 class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
   IconData? selectedIcon;
   Color? selectedColor;
-
   String categoryType = 'income';
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController categoryName = TextEditingController();
 
   String? _fieldValidator(String? value) {
@@ -55,6 +57,21 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
     );
   }
 
+  Future<void> _formSubmit() async {
+    final form = formKey.currentState;
+    if (form!.validate()) {
+      String name = categoryName.text;
+
+      await Categories.createCategory(
+              name, selectedIcon!.codePoint, categoryType, selectedColor!.value)
+          .then((value) => _goBack());
+    }
+  }
+
+  void _goBack() {
+    Navigator.of(context).pop();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -77,10 +94,7 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
           padding: const EdgeInsets.all(8),
           child: ElevatedButton(
             onPressed: () {
-              print(selectedColor);
-              print(selectedIcon);
-              print(categoryName.text);
-              print(categoryType);
+              _formSubmit();
             },
             child: Text(
               'Save',
@@ -95,89 +109,94 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TextFormField(
-                controller: categoryName,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Category name',
-                ),
-                validator: (String? value) {
-                  return _fieldValidator(value);
-                },
-              ),
-              Row(
+          child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: RadioListTile(
-                      groupValue: categoryType,
-                      value: 'expenses',
-                      onChanged: (value) {
-                        setState(() {
-                          categoryType = value!;
-                        });
-                      },
-                      title: const Text(
-                        'Expenses',
+                  TextFormField(
+                    controller: categoryName,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Category name',
+                    ),
+                    validator: (String? value) {
+                      return _fieldValidator(value);
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: RadioListTile(
+                          groupValue: categoryType,
+                          value: 'expenses',
+                          onChanged: (value) {
+                            setState(() {
+                              categoryType = value!;
+                            });
+                          },
+                          title: const Text(
+                            'Expenses',
+                          ),
+                          controlAffinity: ListTileControlAffinity.leading,
+                        ),
                       ),
-                      controlAffinity: ListTileControlAffinity.leading,
+                      Expanded(
+                        child: RadioListTile(
+                          groupValue: categoryType,
+                          value: 'income',
+                          onChanged: (value) {
+                            setState(() {
+                              categoryType = value!;
+                            });
+                          },
+                          title: const Text('Income'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Align(
+                    alignment: Alignment
+                        .centerLeft, // Align the "Icon" text to the left.
+                    child: Text(
+                      'Icons',
+                      style: TextStyle(fontSize: 20),
                     ),
                   ),
-                  Expanded(
-                    child: RadioListTile(
-                      groupValue: categoryType,
-                      value: 'income',
-                      onChanged: (value) {
-                        setState(() {
-                          categoryType = value!;
-                        });
-                      },
-                      title: const Text('Income'),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ListIconTabPage(
+                    initialSelectedItem: selectedIcon,
+                    data: iconslists,
+                    displayNumber: 10,
+                    onItemSelected: _handleIconSelection,
+                    height: 200,
+                    spacing: 30.0,
+                  ),
+                  const Align(
+                    alignment: Alignment
+                        .centerLeft, // Align the "Icon" text to the left.
+                    child: Text(
+                      'Color',
+                      style: TextStyle(fontSize: 20),
                     ),
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomColorPicker(
+                    onColorSelected: _handleColorSelected,
+                    initialSelectedColor: selectedColor,
+                  )
                 ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Align(
-                alignment:
-                    Alignment.centerLeft, // Align the "Icon" text to the left.
-                child: Text(
-                  'Icons',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ListIconTabPage(
-                initialSelectedItem: selectedIcon,
-                data: iconslists,
-                displayNumber: 10,
-                onItemSelected: _handleIconSelection,
-                height: 200,
-                spacing: 30.0,
-              ),
-              const Align(
-                alignment:
-                    Alignment.centerLeft, // Align the "Icon" text to the left.
-                child: Text(
-                  'Color',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomColorPicker(
-                onColorSelected: _handleColorSelected,
-                initialSelectedColor: selectedColor,
-              )
-            ],
-          ),
+              )),
         ),
       ),
     );
