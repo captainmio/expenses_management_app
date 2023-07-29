@@ -81,6 +81,48 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
     _handleColorSelected(Colors.red);
   }
 
+  List<IconButton> _displayDeleteButton(BuildContext context) {
+    if (widget.id != null) {
+      return [
+        IconButton(
+            onPressed: () {
+              _showDeleteConfirmationDialog(context);
+            },
+            icon: const Icon(Icons.delete))
+      ];
+    }
+    return [];
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Delete'),
+          content: const Text('Are you sure you want to delete this category?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Perform delete operation here
+                // Once the delete operation is completed, close the dialog
+                Navigator.of(context).pop();
+              },
+              child: const Text('Delete'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Close the dialog
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     String headerTitle = 'Add Category';
@@ -107,7 +149,11 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
           ),
         ),
       ),
-      appBar: CustomAppBar(title: headerTitle, center: true),
+      appBar: CustomAppBar(
+        title: headerTitle,
+        center: true,
+        actions: _displayDeleteButton(context),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10),

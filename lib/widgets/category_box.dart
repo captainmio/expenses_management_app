@@ -5,8 +5,14 @@ class CategoryBox extends StatelessWidget {
   final int? id;
   final String title;
   final IconData icon;
-  const CategoryBox(
-      {super.key, required this.title, required this.icon, this.id});
+  final Color? color;
+  const CategoryBox({
+    super.key,
+    required this.title,
+    required this.icon,
+    this.color,
+    this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +31,16 @@ class CategoryBox extends StatelessWidget {
           Icon(
             icon,
             size: 50,
-            color: fontColor,
+            color: color ?? fontColor,
           ),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 20,
-              color: fontColor,
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 20,
+                color: fontColor,
+              ),
             ),
           )
         ],

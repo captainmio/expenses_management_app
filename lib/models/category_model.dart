@@ -14,7 +14,7 @@ class CategoryModel {
       {this.id,
       required this.title,
       required this.icon,
-      required this.color,
+      this.color,
       required this.canDelete});
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(

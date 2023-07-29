@@ -88,8 +88,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: CategoryBox(
-                            title: categories[index].title,
-                            icon: categories[index].icon),
+                          title: categories[index].title,
+                          icon: categories[index].icon,
+                          color: categories[index].color,
+                        ),
                       ),
                     );
                   },

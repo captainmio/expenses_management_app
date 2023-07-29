@@ -64,7 +64,6 @@ class ProviderConfigModel extends ChangeNotifier {
     toAdd.addAll([
       CategoryModel(
         title: 'Add category',
-        color: Colors.transparent,
         canDelete: 0,
         icon: Icons.add_box_outlined,
       ),
