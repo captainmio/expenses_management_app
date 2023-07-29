@@ -49,8 +49,6 @@ class Categories {
     final List<Map<String, dynamic>> dbResult =
         await db.query('categories', orderBy: 'id');
 
-    print(dbResult.toString());
-
     if (dbResult.isEmpty) {
       return [];
     } else {

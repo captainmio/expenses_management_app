@@ -29,8 +29,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
     List<CategoryModel> categories = providerPageModel.getCategories;
 
     return Scaffold(
-      appBar: CustomAppBar(
-        title: "Settings categoriesNumber: ${categories.length}",
+      appBar: const CustomAppBar(
+        title: "Settings",
         center: true,
       ),
       body: SingleChildScrollView(
