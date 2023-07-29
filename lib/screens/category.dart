@@ -65,6 +65,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
               SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 13 / 9,
