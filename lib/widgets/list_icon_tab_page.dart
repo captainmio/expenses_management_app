@@ -98,7 +98,7 @@ class _ListIconTabPageState extends State<ListIconTabPage>
                         width: 10,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: isIconSelected(item) ? Colors.green : null,
+                          color: isIconSelected(item) ? Colors.grey : null,
                         ),
                         child: Icon(
                           item,

@@ -69,6 +69,7 @@ class ProviderConfigModel extends ChangeNotifier {
       CategoryModel(
         title: 'Add category',
         canDelete: 0,
+        color: Colors.black,
         icon: Icons.add_box_outlined,
       ),
       ...result

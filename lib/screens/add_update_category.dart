@@ -11,8 +11,14 @@ class AddUpdateCategoryScreen extends StatefulWidget {
   final int? id;
   final String title;
   final IconData icon;
-  const AddUpdateCategoryScreen(
-      {super.key, this.id, required this.title, required this.icon});
+  final Color color;
+  const AddUpdateCategoryScreen({
+    super.key,
+    this.id,
+    required this.title,
+    required this.icon,
+    required this.color,
+  });
 
   @override
   State<AddUpdateCategoryScreen> createState() =>
@@ -63,11 +69,19 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
     if (form!.validate()) {
       String name = categoryName.text;
 
-      await Categories.createCategory(
-              name, selectedIcon!.codePoint, categoryType, selectedColor!.value)
-          .then((value) {
-        _goBack();
-      });
+      if (widget.id == null) {
+        await Categories.createCategory(name, selectedIcon!.codePoint,
+                categoryType, selectedColor!.value)
+            .then((value) {
+          _goBack();
+        });
+      } else {
+        await Categories.updateCategory(widget.id!, name,
+                selectedIcon!.codePoint, categoryType, selectedColor!.value)
+            .then((value) {
+          _goBack();
+        });
+      }
     }
   }
 
@@ -78,8 +92,18 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
   @override
   void initState() {
     super.initState();
-    _handleIconSelection(iconslists[1]);
-    _handleColorSelected(Colors.red);
+    if (widget.id == null) {
+      _handleIconSelection(iconslists[0]);
+      _handleColorSelected(Colors.red);
+    } else {
+      _updateCategory();
+    }
+  }
+
+  void _updateCategory() {
+    categoryName.text = widget.title;
+    _handleIconSelection(widget.icon);
+    _handleColorSelected(widget.color);
   }
 
   List<IconButton> _displayDeleteButton(BuildContext context) {
@@ -95,7 +119,7 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
     return [];
   }
 
-  Future<void> _handleCateoryDelete(int id) async {
+  Future<void> _handleCategoryDelete(int id) async {
     await Categories.deleteCategory(id).then((value) {
       // remove the category to our list of category state
     });
@@ -111,7 +135,7 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
               'Are you sure you want to delete this Category? \n\n(Note: this will delete transaction as well)',
           positiveButtonText: 'Delete',
           onPositivePressed: () async {
-            await _handleCateoryDelete(id).then((value) {
+            await _handleCategoryDelete(id).then((value) {
               // execute _goBack() to close the modal + go back to the previous screen
               _goBack();
               _goBack();
@@ -141,7 +165,7 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
               _formSubmit();
             },
             child: Text(
-              'Save',
+              (widget.id != null) ? 'Update' : 'Save',
               style: TextStyle(
                 fontSize: buttonTextFontSize,
               ),

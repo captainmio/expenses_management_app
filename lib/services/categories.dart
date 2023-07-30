@@ -45,6 +45,31 @@ class Categories {
     return id;
   }
 
+  static Future<int> updateCategory(
+    int id,
+    String title,
+    int icon,
+    String type,
+    int color,
+  ) async {
+    final db = await Categories.db();
+
+    final data = {
+      'title': title,
+      'icon': icon,
+      'type': type,
+      'color': color,
+    };
+
+    final result = await db.update(
+      'categories',
+      data,
+      where: "id = ?",
+      whereArgs: [id],
+    );
+    return result;
+  }
+
   static Future<List<CategoryModel>> getCategories() async {
     final db = await Categories.db();
     final List<Map<String, dynamic>> dbResult =

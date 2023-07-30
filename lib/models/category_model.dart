@@ -7,14 +7,14 @@ class CategoryModel {
   final int? id;
   final String title;
   final IconData icon;
-  final Color? color;
+  final Color color;
   final int canDelete;
 
   CategoryModel(
       {this.id,
       required this.title,
       required this.icon,
-      this.color,
+      required this.color,
       required this.canDelete});
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
