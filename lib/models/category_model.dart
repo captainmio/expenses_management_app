@@ -8,6 +8,7 @@ class CategoryModel {
   final String title;
   final IconData icon;
   final Color color;
+  final String? type;
   final int canDelete;
 
   CategoryModel(
@@ -15,11 +16,13 @@ class CategoryModel {
       required this.title,
       required this.icon,
       required this.color,
+      this.type,
       required this.canDelete});
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
         id: json["id"],
         title: json["title"],
+        type: json["type"],
         color: Color(json["color"]),
         icon: IconData(
           json["icon"],

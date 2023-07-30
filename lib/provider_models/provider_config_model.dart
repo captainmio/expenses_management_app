@@ -7,48 +7,13 @@ import '../services/categories.dart';
 class ProviderConfigModel extends ChangeNotifier {
   int currentIndex = 0;
 
-  List<CategoryModel> categories = [
-    // CategoryModel(
-    //   id: 1,
-    //   title: 'Food',
-    //   icon: Icons.local_grocery_store_outlined,
-    // ),
-    // CategoryModel(
-    //   id: 2,
-    //   title: 'Bills',
-    //   icon: Icons.ad_units_outlined,
-    // ),
-    // CategoryModel(
-    //   id: 3,
-    //   title: 'Government',
-    //   icon: Icons.business_center_outlined,
-    // ),
-    // CategoryModel(
-    //   id: 4,
-    //   title: 'Entertainment',
-    //   icon: Icons.local_movies_outlined,
-    // ),
-    // CategoryModel(
-    //   id: 5,
-    //   title: 'Housing',
-    //   icon: Icons.house,
-    // ),
-    // CategoryModel(
-    //   id: 6,
-    //   title: 'Healthcare',
-    //   icon: Icons.local_hospital_outlined,
-    // ),
-    // CategoryModel(
-    //   id: 7,
-    //   title: 'Transportation',
-    //   icon: FontAwesome.bus,
-    // ),
-    // CategoryModel(
-    //   id: 8,
-    //   title: 'Clothing',
-    //   icon: Ionicons.shirt,
-    // ),
-  ];
+  List<CategoryModel> categories = [];
+  CategoryModel addCategory = CategoryModel(
+    title: 'Add category',
+    canDelete: 0,
+    color: Colors.black,
+    icon: Icons.add_box_outlined,
+  );
 
   int get getCurrentIndex => currentIndex;
   List<CategoryModel> get getCategories => categories;
@@ -65,15 +30,7 @@ class ProviderConfigModel extends ChangeNotifier {
   Future<void> updateCategories(List<CategoryModel> result) async {
     final List<CategoryModel> toAdd = [];
 
-    toAdd.addAll([
-      CategoryModel(
-        title: 'Add category',
-        canDelete: 0,
-        color: Colors.black,
-        icon: Icons.add_box_outlined,
-      ),
-      ...result
-    ]);
+    toAdd.addAll([addCategory, ...result]);
 
     categories = toAdd;
     notifyListeners();

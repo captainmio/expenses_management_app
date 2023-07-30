@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
+import '../constants/default_category_list.dart';
 import '../models/category_model.dart';
 
 class Categories {
@@ -15,6 +16,19 @@ class Categories {
       createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
 """);
+
+    // execute expenses category seeder
+    for (final category in expensescategories) {
+      final data = {
+        'title': category.title,
+        'icon': category.icon.codePoint,
+        'type': 'expenses',
+        'color': category.color.value,
+        'canDelete': category.canDelete,
+      };
+      await database.insert('categories', data,
+          conflictAlgorithm: sql.ConflictAlgorithm.replace);
+    }
   }
 
   static Future<sql.Database> db() async {

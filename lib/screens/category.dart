@@ -29,19 +29,73 @@ class _CategoryScreenState extends State<CategoryScreen> {
     });
   }
 
+  Widget _categoryListing(categories) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 5 / 4,
+                ),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddUpdateCategoryScreen(
+                                    id: categories[index].id,
+                                    title: categories[index].title,
+                                    icon: categories[index].icon,
+                                    color: categories[index].color,
+                                  ))).then((value) => _fetchCategories());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: CategoryBox(
+                        title: categories[index].title,
+                        icon: categories[index].icon,
+                        color: categories[index].color,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final providerPageModel = Provider.of<ProviderConfigModel>(context);
 
     List<CategoryModel> categories = providerPageModel.getCategories;
 
-    return Scaffold(
-      appBar: const CustomAppBar(
-        title: "Settings",
-        center: true,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
+    List<CategoryModel> expensesCategories =
+        categories.where((category) => category.type != 'income').toList();
+
+    List<CategoryModel> incomeCategories =
+        categories.where((category) => category.type != 'expenses').toList();
+
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: const CustomAppBar(
+          title: "Settings",
+          center: true,
+        ),
+        body: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
@@ -69,39 +123,23 @@ class _CategoryScreenState extends State<CategoryScreen> {
               const SizedBox(
                 height: 30,
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 13 / 9,
+              const TabBar(
+                labelColor: Colors.black,
+                tabs: [
+                  Tab(
+                    text: 'Expenses',
                   ),
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AddUpdateCategoryScreen(
-                                      id: categories[index].id,
-                                      title: categories[index].title,
-                                      icon: categories[index].icon,
-                                      color: categories[index].color,
-                                    ))).then((value) => _fetchCategories());
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: CategoryBox(
-                          title: categories[index].title,
-                          icon: categories[index].icon,
-                          color: categories[index].color,
-                        ),
-                      ),
-                    );
-                  },
+                  Tab(
+                    text: 'Income',
+                  ),
+                ],
+              ),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    _categoryListing(expensesCategories),
+                    _categoryListing(incomeCategories)
+                  ],
                 ),
               ),
             ],
