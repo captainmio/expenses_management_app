@@ -13,6 +13,7 @@ class AddUpdateCategoryScreen extends StatefulWidget {
   final IconData icon;
   final String? type;
   final Color color;
+  final int? canDelete;
   const AddUpdateCategoryScreen({
     super.key,
     this.id,
@@ -20,6 +21,7 @@ class AddUpdateCategoryScreen extends StatefulWidget {
     this.type,
     required this.icon,
     required this.color,
+    this.canDelete,
   });
 
   @override
@@ -71,19 +73,31 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
     if (form!.validate()) {
       String name = categoryName.text;
 
-      if (widget.id == null) {
-        await Categories.createCategory(name, selectedIcon!.codePoint,
-                categoryType, selectedColor!.value)
-            .then((value) {
-          _goBack();
-        });
-      } else {
-        await Categories.updateCategory(widget.id!, name,
-                selectedIcon!.codePoint, categoryType, selectedColor!.value)
-            .then((value) {
-          _goBack();
-        });
-      }
+      await Categories.searchCategoryByName(name).then(
+        (result) {
+          if (result == null) {
+            if (widget.id == null) {
+              Categories.createCategory(name, selectedIcon!.codePoint,
+                      categoryType, selectedColor!.value)
+                  .then((value) {
+                _goBack();
+              });
+            } else {
+              Categories.updateCategory(
+                      widget.id!,
+                      name,
+                      selectedIcon!.codePoint,
+                      categoryType,
+                      selectedColor!.value)
+                  .then((value) {
+                _goBack();
+              });
+            }
+          } else {
+            _showCategoryNameExist(context);
+          }
+        },
+      );
     }
   }
 
@@ -112,7 +126,7 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
   }
 
   List<IconButton> _displayDeleteButton(BuildContext context) {
-    if (widget.id != null) {
+    if (widget.canDelete == 1) {
       return [
         IconButton(
             onPressed: () {
@@ -127,6 +141,8 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
   Future<void> _handleCategoryDelete(int id) async {
     await Categories.deleteCategory(id).then((value) {
       // remove the category to our list of category state
+      _goBack();
+      _goBack();
     });
   }
 
@@ -139,14 +155,26 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
           message:
               'Are you sure you want to delete this Category? \n\n(Note: this will delete transaction as well)',
           positiveButtonText: 'Delete',
-          onPositivePressed: () async {
-            await _handleCategoryDelete(id).then((value) {
-              // execute _goBack() to close the modal + go back to the previous screen
-              _goBack();
-              _goBack();
-            });
+          onPositivePressed: () {
+            _handleCategoryDelete(id);
           },
           negativeButtonText: 'Cancel',
+        );
+      },
+    );
+  }
+
+  void _showCategoryNameExist(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomAlertDialog(
+          title: 'Category already exist',
+          message: 'Please change category name',
+          positiveButtonText: 'Okay',
+          onPositivePressed: () async {
+            _goBack();
+          },
         );
       },
     );
@@ -192,10 +220,17 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   TextFormField(
+                    maxLength: 16,
                     controller: categoryName,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
                       hintText: 'Category name',
+                      prefixIcon: Icon(
+                        selectedIcon,
+                        color: selectedColor,
+                      ),
+                      prefixIconConstraints:
+                          const BoxConstraints(minWidth: 60.0),
                     ),
                     validator: (String? value) {
                       return _fieldValidator(value);

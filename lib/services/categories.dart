@@ -112,6 +112,23 @@ class Categories {
     }
   }
 
+  static Future<CategoryModel?> searchCategoryByName(String title) async {
+    final db = await Categories.db();
+    final List<Map<String, dynamic>> dbResult = await db.query(
+      'categories',
+      where: "lower(title) LIKE ?",
+      whereArgs: ['%$title%'],
+      orderBy: 'id',
+    );
+
+    // final result = dbResult.map((map) => CategoryModel.fromJson(map)).toList();
+    if (dbResult.isNotEmpty) {
+      return CategoryModel.fromJson(dbResult.first);
+    } else {
+      return null;
+    }
+  }
+
   static Future<void> deleteCategory(int id) async {
     final db = await Categories.db();
     try {

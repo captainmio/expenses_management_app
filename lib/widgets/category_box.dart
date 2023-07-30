@@ -38,7 +38,7 @@ class CategoryBox extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: title.length > 7 ? 16 : 20,
                 color: fontColor,
               ),
             ),

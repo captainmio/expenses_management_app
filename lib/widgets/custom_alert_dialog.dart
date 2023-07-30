@@ -7,7 +7,7 @@ class CustomAlertDialog extends StatelessWidget {
   final String message;
   final String? positiveButtonText;
   final VoidCallback onPositivePressed;
-  final String negativeButtonText;
+  final String? negativeButtonText;
   final VoidCallback? onNegativePressed;
 
   const CustomAlertDialog({
@@ -16,7 +16,7 @@ class CustomAlertDialog extends StatelessWidget {
     required this.message,
     required this.positiveButtonText,
     required this.onPositivePressed,
-    required this.negativeButtonText,
+    this.negativeButtonText,
     this.onNegativePressed,
   });
 

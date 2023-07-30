@@ -36,7 +36,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height - 120,
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -49,15 +49,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddUpdateCategoryScreen(
-                                    id: categories[index].id,
-                                    title: categories[index].title,
-                                    icon: categories[index].icon,
-                                    color: categories[index].color,
-                                    type: categories[index].type,
-                                  ))).then((value) => _fetchCategories());
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddUpdateCategoryScreen(
+                            id: categories[index].id,
+                            title: categories[index].title,
+                            icon: categories[index].icon,
+                            color: categories[index].color,
+                            type: categories[index].type,
+                            canDelete: categories[index].canDelete,
+                          ),
+                        ),
+                      ).then((value) => _fetchCategories());
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(10),
