@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
 import '../models/category_model.dart';
@@ -56,6 +57,19 @@ class Categories {
           dbResult.map((map) => CategoryModel.fromJson(map)).toList();
 
       return result;
+    }
+  }
+
+  static Future<void> deleteCategory(int id) async {
+    final db = await Categories.db();
+    try {
+      await db.delete(
+        'categories',
+        where: "id = ?",
+        whereArgs: [id],
+      );
+    } catch (err) {
+      debugPrint('Something went wrong when deleting an item: $err');
     }
   }
 }

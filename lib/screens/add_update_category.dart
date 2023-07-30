@@ -4,6 +4,7 @@ import 'package:expenses_management_app/widgets/color_picker.dart';
 import 'package:flutter/material.dart';
 import '../constants/theme_color.dart';
 import '../widgets/app_bar.dart';
+import '../widgets/custom_alert_dialog.dart';
 import '../widgets/list_icon_tab_page.dart';
 
 class AddUpdateCategoryScreen extends StatefulWidget {
@@ -86,7 +87,7 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
       return [
         IconButton(
             onPressed: () {
-              _showDeleteConfirmationDialog(context);
+              _showDeleteConfirmationDialog(context, widget.id!);
             },
             icon: const Icon(Icons.delete))
       ];
@@ -94,30 +95,29 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
     return [];
   }
 
-  void _showDeleteConfirmationDialog(BuildContext context) {
+  Future<void> _handleCateoryDelete(int id) async {
+    await Categories.deleteCategory(id).then((value) {
+      // remove the category to our list of category state
+    });
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, int id) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Delete'),
-          content: const Text('Are you sure you want to delete this category?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                // Perform delete operation here
-                // Once the delete operation is completed, close the dialog
-                Navigator.of(context).pop();
-              },
-              child: const Text('Delete'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Close the dialog
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
+        return CustomAlertDialog(
+          title: 'Confirm Delete',
+          message:
+              'Are you sure you want to delete this Category? \n\n(Note: this will delete transaction as well)',
+          positiveButtonText: 'Delete',
+          onPositivePressed: () async {
+            await _handleCateoryDelete(id).then((value) {
+              // execute _goBack() to close the modal + go back to the previous screen
+              _goBack();
+              _goBack();
+            });
+          },
+          negativeButtonText: 'Cancel',
         );
       },
     );

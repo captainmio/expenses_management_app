@@ -19,7 +19,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<ProviderConfigModel>(context, listen: false).getcategories();
+    _fetchCategories();
+  }
+
+  Future<void> _fetchCategories() async {
+    await Categories.getCategories().then((results) {
+      Provider.of<ProviderConfigModel>(context, listen: false)
+          .updateCategories(results);
+    });
   }
 
   @override
@@ -82,10 +89,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       id: categories[index].id,
                                       title: categories[index].title,
                                       icon: categories[index].icon,
-                                    ))).then((value) =>
-                            Provider.of<ProviderConfigModel>(context,
-                                    listen: false)
-                                .getcategories());
+                                    ))).then((value) => _fetchCategories());
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10),

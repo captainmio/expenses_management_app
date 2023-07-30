@@ -58,9 +58,13 @@ class ProviderConfigModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getcategories() async {
+  Future<void> deletecategory(int id) async {
+    categories.removeWhere((category) => category.id == id);
+  }
+
+  Future<void> updateCategories(List<CategoryModel> result) async {
     final List<CategoryModel> toAdd = [];
-    final result = await Categories.getCategories();
+
     toAdd.addAll([
       CategoryModel(
         title: 'Add category',
