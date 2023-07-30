@@ -29,6 +29,19 @@ class Categories {
       await database.insert('categories', data,
           conflictAlgorithm: sql.ConflictAlgorithm.replace);
     }
+
+    // execute income category seeder
+    for (final category in incomecategories) {
+      final data = {
+        'title': category.title,
+        'icon': category.icon.codePoint,
+        'type': 'income',
+        'color': category.color.value,
+        'canDelete': category.canDelete,
+      };
+      await database.insert('categories', data,
+          conflictAlgorithm: sql.ConflictAlgorithm.replace);
+    }
   }
 
   static Future<sql.Database> db() async {

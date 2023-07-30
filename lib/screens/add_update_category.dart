@@ -11,11 +11,13 @@ class AddUpdateCategoryScreen extends StatefulWidget {
   final int? id;
   final String title;
   final IconData icon;
+  final String? type;
   final Color color;
   const AddUpdateCategoryScreen({
     super.key,
     this.id,
     required this.title,
+    this.type,
     required this.icon,
     required this.color,
   });
@@ -104,6 +106,9 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
     categoryName.text = widget.title;
     _handleIconSelection(widget.icon);
     _handleColorSelected(widget.color);
+    setState(() {
+      categoryType = widget.type!;
+    });
   }
 
   List<IconButton> _displayDeleteButton(BuildContext context) {

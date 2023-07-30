@@ -56,6 +56,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                     title: categories[index].title,
                                     icon: categories[index].icon,
                                     color: categories[index].color,
+                                    type: categories[index].type,
                                   ))).then((value) => _fetchCategories());
                     },
                     child: Padding(

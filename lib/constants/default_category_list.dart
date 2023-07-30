@@ -52,3 +52,12 @@ List<CategoryModel> expensescategories = [
     canDelete: 0,
   ),
 ];
+
+List<CategoryModel> incomecategories = [
+  CategoryModel(
+    title: 'Salary',
+    color: Colors.blue,
+    icon: FontAwesome.bank,
+    canDelete: 0,
+  ),
+];
