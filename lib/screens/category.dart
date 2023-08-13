@@ -93,7 +93,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         categories.where((category) => category.type != 'expenses').toList();
 
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: const CustomAppBar(
           title: "Settings",

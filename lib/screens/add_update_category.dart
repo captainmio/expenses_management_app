@@ -1,6 +1,7 @@
 import 'package:expenses_management_app/constants/icon_lists.dart';
 import 'package:expenses_management_app/services/categories.dart';
 import 'package:expenses_management_app/widgets/color_picker.dart';
+import 'package:expenses_management_app/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import '../constants/theme_color.dart';
 import '../widgets/app_bar.dart';
@@ -219,22 +220,15 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  TextFormField(
-                    maxLength: 16,
+                  CustomTextField(
+                    hintText: 'Transaction',
                     controller: categoryName,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: 'Category name',
-                      prefixIcon: Icon(
-                        selectedIcon,
-                        color: selectedColor,
-                      ),
-                      prefixIconConstraints:
-                          const BoxConstraints(minWidth: 60.0),
+                    validation: _fieldValidator,
+                    icon: Icon(
+                      selectedIcon,
+                      color: selectedColor,
                     ),
-                    validator: (String? value) {
-                      return _fieldValidator(value);
-                    },
+                    maxLength: 16,
                   ),
                   const SizedBox(
                     height: 20,
@@ -246,9 +240,7 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
                           groupValue: categoryType,
                           value: 'expenses',
                           onChanged: (value) {
-                            setState(() {
-                              categoryType = value!;
-                            });
+                            _handleCategoryTypeSelection(value!);
                           },
                           title: const Text(
                             'Expenses',
@@ -261,9 +253,7 @@ class _AddUpdateCategoryScreenState extends State<AddUpdateCategoryScreen> {
                           groupValue: categoryType,
                           value: 'income',
                           onChanged: (value) {
-                            setState(() {
-                              categoryType = value!;
-                            });
+                            _handleCategoryTypeSelection(value!);
                           },
                           title: const Text('Income'),
                         ),
