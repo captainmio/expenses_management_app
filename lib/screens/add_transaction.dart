@@ -19,7 +19,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   final TextEditingController category = TextEditingController();
   final TextEditingController name = TextEditingController();
   final TextEditingController amount = TextEditingController();
-  List<CustomSelectBoxModel> categoryList = [];
+  List<CustomSelectBoxModel> categories = [];
+  List<CustomSelectBoxModel> filteredCategories = [];
   String categoryType = 'expenses';
 
   List<DateTime?> selectedDateValue = [];
@@ -40,14 +41,19 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   Future<void> _fetchCategories() async {
     var results = await Categories.getCategories();
 
-    List<CustomSelectBoxModel> categories = [];
     for (var result in results) {
-      categories.add(
-          CustomSelectBoxModel(key: result.id.toString(), value: result.title));
+      categories.add(CustomSelectBoxModel(
+          key: result.id.toString(),
+          value: result.title,
+          categoryType: result.type!));
     }
 
     setState(() {
-      categoryList = categories;
+      // filteredCategories = categories;
+
+      filteredCategories = categories
+          .where((item) => item.categoryType == categoryType)
+          .toList();
     });
   }
 
@@ -65,6 +71,21 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     } catch (e) {
       return "Please input correct value";
     }
+  }
+
+  void _handleCategoryTypeSelection(String value) {
+    setState(
+      () {
+        categoryType = value;
+
+        // filter category
+        filteredCategories = categories
+            .where((item) => item.categoryType == categoryType)
+            .toList();
+
+        category.text = '';
+      },
+    );
   }
 
   Future<void> _formSubmit() async {
@@ -112,9 +133,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                         groupValue: categoryType,
                         value: 'expenses',
                         onChanged: (value) {
-                          setState(() {
-                            categoryType = value!;
-                          });
+                          _handleCategoryTypeSelection(value!);
                         },
                         title: const Text(
                           'Expenses',
@@ -127,9 +146,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                         groupValue: categoryType,
                         value: 'income',
                         onChanged: (value) {
-                          setState(() {
-                            categoryType = value!;
-                          });
+                          _handleCategoryTypeSelection(value!);
                         },
                         title: const Text('Income'),
                       ),
@@ -149,7 +166,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   child: CustomSelectBox(
                     validation: _fieldValidator,
                     label: '-- Select Category --',
-                    options: categoryList,
+                    options: filteredCategories,
                     onChanged: (value) => {category.text = value!},
                   ),
                 ),

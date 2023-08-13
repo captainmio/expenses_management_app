@@ -21,11 +21,18 @@ class CustomSelectBox extends StatefulWidget {
 class _CustomSelectBoxState extends State<CustomSelectBox> {
   String selectedValue = '';
 
-  Widget addPadding(Widget wid, EdgeInsets edge) {
-    return Padding(
-      padding: edge,
-      child: wid,
-    );
+  @override
+  void didUpdateWidget(CustomSelectBox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Check if options have changed
+    if (widget.options != oldWidget.options) {
+      // Reset the selected value and trigger onChanged callback
+      setState(() {
+        selectedValue = '';
+      });
+      widget.onChanged(selectedValue);
+    }
   }
 
   @override
